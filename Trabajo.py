@@ -12,5 +12,5 @@ u=1.66e-27
 #Plantear las derivadas
 def derivadas(var,t): 
 	x, y, vx, vy= var[0], var[1], var[2], var[3] #Los valores iniciales vendrán en el array var
-	return [ , , 
+	return [ ,dsfsdf , 
 	
