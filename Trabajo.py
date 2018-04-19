@@ -26,10 +26,10 @@ def derivadas(var,t):
 	ay=cte*(y/(x**2+y**2)**(3/2))
 	return array([vx, vy, ax, ay])
 	
-tiempos=linspace(0,10,100)
+tiempos=linspace(0,100,1000)
 
 #Condiciones iniciales
-x, y, vx, vy= 0., 0., 
+x, y, vx, vy= -100, 10., 2, 0
 
 trayectorias= odeint(derivadas, array([x, y, vy, vy]), tiempos)
 xt, yt, vxt, vyt = trayectorias[:,0], trayectorias[:,1], trayectorias[:,2], trayectorias[:,3]
