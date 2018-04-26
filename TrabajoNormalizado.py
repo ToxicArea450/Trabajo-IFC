@@ -45,9 +45,6 @@ n=b.size
 #Como b va a tener varios valores, ya que tenemos mas de una partícula, hacemos un bucle for en el que para cada valor se llame a la función odeint
 phit=zeros_like(b) #Array de 0 con el mismo tamaño que el array b al que le iremos metiendo los datos de cada ángulo para luego poder representarlos
 
-print 'Parámetro impacto | pendiente | ángulo' 
-print '------------------'
-
 for i in range(n-1):
 	y=b[i] #Parámetro de impacto de cada particula
 	trayectorias=odeint(derivadas,array([x, y, vx, vy]), tiempos)
@@ -57,21 +54,21 @@ for i in range(n-1):
 	plt.subplot(2,1,1)
 	plt.plot(xt, yt)
 	
+	#Cálculo del ángulo de dispersión
 	p, pcov=curve_fit(recta, xt[-50:], yt[-50:])
 	pendiente=p[0]
-	angulo=atan(pendiente)*(180/pi)
-	
-	if y>0:
+	angulo=atan(pendiente)*(180/pi) #El problema que tiene este ángulo es que si la particula se desvia mas de 90º te da el angulo complemetario cambiado de signo, no el que nos interesa
+	#Para solucionar ese problema hacemos lo siguiente:
+	if y>0:                   #Si el parámetro de impacto es positivo, la pendiente será positiva por lo que el ángulo también, si el ángulo sale negativo significa que nos han dado el complementario.
 		if pendiente >=0:
 			phi=angulo
 		elif pendiente <0:
 			phi=(180-angulo)
-	if y<0:
+	if y<0:                   #Si el parámetro de impacto es negativo, la pendiente será negativa por lo que el ángulo también, si el ángulo sale positivo significa que nos han dado el complementario.
 		if pendiente <=0:
 			phi=angulo
 		elif pendiente >0:
-			phi=(180-abs(angulo))*(-1)
-	print '%.5f | %.5f | %.5f| %.5f'%(y,pendiente,angulo, phi)		
+			phi=(180-abs(angulo))*(-1)	
 	phit[i]=phi
 	
 plt.plot(0,0,'ro')
