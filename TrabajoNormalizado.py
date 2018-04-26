@@ -45,6 +45,9 @@ n=b.size
 #Como b va a tener varios valores, ya que tenemos mas de una partícula, hacemos un bucle for en el que para cada valor se llame a la función odeint
 phit=zeros_like(b) #Array de 0 con el mismo tamaño que el array b al que le iremos metiendo los datos de cada ángulo para luego poder representarlos
 
+print 'Parámetro impacto | pendiente | ángulo' 
+print '------------------'
+
 for i in range(n-1):
 	y=b[i] #Parámetro de impacto de cada particula
 	trayectorias=odeint(derivadas,array([x, y, vx, vy]), tiempos)
@@ -63,12 +66,13 @@ for i in range(n-1):
 		if pendiente >=0:
 			phi=angulo
 		elif pendiente <0:
-			phi=(180-angulo)
-	if y<0:                   #Si el parámetro de impacto es negativo, la pendiente será negativa por lo que el ángulo también, si el ángulo sale positivo significa que nos han dado el complementario.
+			phi=(180-abs(angulo))
+	elif y<0:                   #Si el parámetro de impacto es negativo, la pendiente será negativa por lo que el ángulo también, si el ángulo sale positivo significa que nos han dado el complementario.
 		if pendiente <=0:
 			phi=angulo
 		elif pendiente >0:
-			phi=(180-abs(angulo))*(-1)	
+			phi=(180-abs(angulo))*(-1)
+	print '%.5f | %.5f | %.5f| %.5f'%(y,pendiente,angulo, phi)		
 	phit[i]=phi
 	
 plt.plot(0,0,'ro')
