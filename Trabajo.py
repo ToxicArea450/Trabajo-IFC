@@ -22,26 +22,42 @@ def derivadas(var,t):
 	ay=cte*(y/((x**2+y**2)**(3./2)))
 	return array([vx, vy, ax, ay])
 
+#Definimos la función recta para poder calcular el ángulo de dispersión
+def recta(x, a, b):
+	return x*a+b
+	
 #Creamos el vector de tiempos e introducimos las condiciones iniciales
 tiempos=linspace(0,100*zs,1000)
 x, vx, vy= 100*R, -(2*R)/zs, 0.0
-b=random.randint(0,200,(60,)) #Parámetro de impacto, es la distancia entre la dirección de la particula incidente y el centro de fuerzas, es decir, la y.
+b=random.normal(0,0.5,(50,)) #Parámetro de impacto, es la distancia entre la dirección de la particula incidente y el centro de fuerzas, es decir, la y.
+n=b.size
 
 #Como b van a ser varios números, acemos un bucle for en el que para cada número se llame a la función odeint
-for k in b:
-	y=k*R/1000
+
+phit=zeros_like(b) #Array de 0 con el mismo tamaño que el array b al que le iremos metiendo los datos de cada ángulo
+
+for i in range(n-1):
+	y=b[i]*R*5
 	trayectorias=odeint(derivadas,array([x, y, vx, vy]), tiempos)
 	xt, yt, vxt, vyt = trayectorias[:,0], trayectorias[:,1], trayectorias[:,2], trayectorias[:,3]
 	
 	#Dibujo de las trayectorias
+	plt.subplot(2,1,1)
 	plt.plot(xt, yt)
+	
+	#Ángulo de dispersión
+	k=1
+	E=4
+	phi=2*atan(k/(2*E*b[i]))*180/pi
+	phit[i]=phi
 	
 plt.plot(0,0,'ro')
 plt.xlabel('x')
 plt.ylabel('y')
+
+plt.subplot(2,1,2)
+plt.plot(b,phit,'bo')
+plt.xlabel('b')
+plt.ylabel('phit')
 plt.show()
 
-#Ángulo de dispersión
-k=1./4*pi*e0
-E=0.5*M*vx
-phi=atan(float(k)/(-82*E*b))*180/pi
