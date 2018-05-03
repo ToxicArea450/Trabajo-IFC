@@ -38,11 +38,11 @@ def euler(funcion, x, y, vx, vy, tiempos):
 #Creamos el vector de tiempos e introducimos las condiciones iniciales
 tiempos=linspace(0,100*zs,100)
 x, vx, vy= 100*R, -(2*R)/zs, 0.0
-b=random.randint(0,200,(10,)) #Parámetro de impacto, es la distancia entre la dirección de la particula incidente y el centro de fuerzas, es decir, la y.
+b=arange(0,1,0.01) #Parámetro de impacto, es la distancia entre la dirección de la particula incidente y el centro de fuerzas, es decir, la y.
 
 #
 for k in b:
-	y=k*R/1000
+	y=k*R
 	xt, yt, vxt, vyt=euler(derivadas, x, y, vx, vy, tiempos)
 	plt.plot(xt, yt)
 	
